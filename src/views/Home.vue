@@ -1,18 +1,32 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <list-products class="mt-8" :products="products" :load="load" />
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import ListProducts from '@/components/ListProducts'
+import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'Home',
   components: {
-    HelloWorld
+    ListProducts
+  },
+  data: () =>({
+    load: false,
+  }),
+  computed: {
+    ...mapState(['products']),
+  },
+  methods: {
+    ...mapActions(['getProducts'])
+  },
+  created () {
+    this.load = true
+    setTimeout( () => {
+      this.getProducts().finally( () => this.load = false )
+    }, 3000 )
   }
+
+
 }
 </script>
